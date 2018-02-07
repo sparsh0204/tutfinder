@@ -9,4 +9,4 @@ def home(request):
         technologies = Technology.objects.all()
     except Technology.DoesNotExist:
         technologies = None
-    return render(request, 'home.html', {'technologies': technologies})
+    return render(request, 'home_page.html', {'technologies': technologies})

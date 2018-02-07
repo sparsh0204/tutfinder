@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from technology.views import technology
+from .views import technology
 
 urlpatterns = [
 #    url(r'^panel/person/(?P<person_id>[0-9]+)$', 'apps.panel.views.person_form', name='panel_person_form'),
