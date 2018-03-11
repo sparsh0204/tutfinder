@@ -13,10 +13,13 @@
 
             <h1> {{ tech.title }}</h1>>
             <h5> {{ tech.details }}</h5>>
+            <h5>{{ tech.slug }}</h5>
             <a href="{{ tech.doc_url }}">{{ tech.doc_url }}</a>
         <div>
             {% for course in courses %}
-                <h3>{{ course.title }}</h3>
+
+
+                <a href="/tutorial/{{ tech.slug }}/{{ course.slug }}">{{ course.title }}</a>
                 <h5>{{ course.user }}</h5>
                 <h5>{{ course.free }}</h5>
                 <h5>{{ course.upvotes }}</h5>

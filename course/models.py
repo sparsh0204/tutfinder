@@ -4,9 +4,11 @@ from django.contrib.auth.models import Permission, User
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
+from django.template.defaultfilters import slugify
 
 class Course(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    url = models.URLField(default='', blank=True)
 #    langauge =
     title = models.CharField(max_length=255, blank=True, null=True)
     free = models.BooleanField(default=True, blank=False)
@@ -20,6 +22,11 @@ class Course(models.Model):
 #    expexted duration
     upvotes = models.IntegerField(blank=True, null=True)
     tech = models.ForeignKey(Technology, default= None , on_delete=models.CASCADE)
+    slug = models.SlugField(blank=True, unique=True)
 
     def __str__(self):
         return (self.title + str(self.tech))
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Course, self).save(*args, **kwargs)

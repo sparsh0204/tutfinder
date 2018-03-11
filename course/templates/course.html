@@ -10,5 +10,12 @@
 <body>
     <div>
         <h5>course page</h5>
-        <h5>{{ tech }}</h5>
+
+
+
+                <a href="/tutorial/{{ course.slug }}">{{ course.title }}</a>
+                <h5>{{ course.user }}</h5>
+                <h5>{{ course.free }}</h5>
+                <h5>{{ course.upvotes }}</h5>
+                <h5>{{ course.level }}</h5>
     </div>
