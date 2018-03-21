@@ -24,6 +24,8 @@ class Course(models.Model):
     tech = models.ForeignKey(Technology, default= None , on_delete=models.CASCADE)
     slug = models.SlugField(blank=True, unique=True)
 
+#    def get_absolute_url(self):
+
     def __str__(self):
         return (self.title + str(self.tech))
 

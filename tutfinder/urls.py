@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'', include('core.urls')),
     url(r'', include('technology.urls')),
     url(r'', include('course.urls')),
+    url(r'', include('api.urls')),
 #    url(r'', include('user.urls')),
 
 ]
