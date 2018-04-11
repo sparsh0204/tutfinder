@@ -1,8 +1,10 @@
 from rest_framework import generics, permissions, status
-from .serializers import TechnologySerializer, CourseSerializer
+from .serializers import TechnologySerializer, CourseSerializer, ReviewSerializer
 
 from technology.models import Technology
 from course.models import Course
+from review.models import Review
+
 #from django.contrib.auth.models import User
 from django.shortcuts import render
 #from rest_framework.response import Response
@@ -29,6 +31,28 @@ class CourseList(generics.ListCreateAPIView):
 class CourseDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+class TechCourseList(generics.ListCreateAPIView):
+    serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        tech = self.kwargs['tech']
+        return Course.objects.filter(tech=tech)
+
+class ReviewList(generics.ListCreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        course = self.kwargs['course']
+        return Review.objects.filter(course=course)
+
+class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+
+
 
 '''class SnippetList(APIView):
     """
