@@ -8,7 +8,7 @@ from django.template.defaultfilters import slugify
 class Technology(models.Model):
 
     def tech_logo(instance, filename):
-        return '/'.join(['Technology', ])
+        return '/'.join(['Images/Technology', instance.title])
 #    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
 #    langauge =
     title = models.CharField(max_length=255, blank=True, null=True)

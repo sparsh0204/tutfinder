@@ -1,10 +1,10 @@
 from rest_framework import generics, permissions, status
-from .serializers import TechnologySerializer, CourseSerializer, ReviewSerializer
+from .serializers import TechnologySerializer, CourseSerializer, ReviewSerializer, ProfileSerializer
 
 from technology.models import Technology
 from course.models import Course
 from review.models import Review
-
+from user.models import Profile
 #from django.contrib.auth.models import User
 from django.shortcuts import render
 #from rest_framework.response import Response
