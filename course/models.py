@@ -5,12 +5,15 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.template.defaultfilters import slugify
+from ckeditor.fields import RichTextField #does not contain upload option for us in Images
+from ckeditor_uploader.fields import  RichTextUploadingField #for adding upload from our own server in CKEDITOR
 
 class Course(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     url = models.URLField(default='', blank=True)
 #    langauge =
     title = models.CharField(max_length=255, blank=True, null=True)
+    detail = RichTextUploadingField()
     free = models.BooleanField(default=True, blank=False)
 #    active
 #    price

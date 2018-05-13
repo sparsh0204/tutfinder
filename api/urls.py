@@ -21,6 +21,7 @@ urlpatterns = {
 #    url(r'^users/$', UserList.as_view()),
 #    url(r'^users/(?P<pk>[0-9]+)/$', UserDetail.as_view()),
 #    url(r'^get-token/', obtain_auth_token),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 }
 
 urlpatterns = format_suffix_patterns(urlpatterns)
