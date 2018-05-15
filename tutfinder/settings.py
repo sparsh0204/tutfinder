@@ -40,9 +40,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'course',
     'core',
+    'review',
     'technology',
     'user',
     'corsheaders',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +136,14 @@ STATICFILES_DIRS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+#setting upload paths for ckeditor
+CKEDITOR_UPLOAD_PATH = "uploads/"
+#ckeditor uses pillow for image backend
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_CONFIGS = {
+    'default': {
+    },
+}
+#saw it some where
+CKEDITOR_ALLOW_NONIMAGE_FILES = True
