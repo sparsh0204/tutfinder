@@ -6,7 +6,7 @@ from .views import TechnologyList, TechnologyDetail, CourseList, CourseDetail
 
 urlpatterns = {
     url(r'^api/technology/$', TechnologyList.as_view()),
-    url(r'^api/technology/(?P<pk>[0-9]+)$', TechnologyDetail.as_view()),
+    # url(r'^api/technology/(?P<pk>[0-9]+)$', TechnologyDetail.as_view()),
     url(r'^api/course/$',CourseList.as_view() ),
     url(r'^api/course/(?P<pk>[0-9]+)$', CourseDetail.as_view()),
 #    url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
