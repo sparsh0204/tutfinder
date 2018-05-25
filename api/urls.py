@@ -6,18 +6,18 @@ from .views import TechnologyList, TechnologyDetail, CourseList, CourseDetail, T
 
 urlpatterns = {
     url(r'^api/technology/$', TechnologyList.as_view()),
-<<<<<<< HEAD
+
     # url(r'^api/technology/(?P<pk>[0-9]+)$', TechnologyDetail.as_view()),
-=======
+
     url(r'^api/technology/(?P<pk>[0-9]+)$', TechnologyDetail.as_view()),
-#    url(r'^api/courses/$',CourseList.as_view() ),
+    url(r'^api/courses/$',CourseList.as_view() ),
     url(r'^api/courses/(?P<tech>.+)/$', TechCourseList.as_view()),
     url(r'^api/reviews/(?P<course>.+)/$', ReviewList.as_view()),
     url(r'^api/review/(?P<pk>[0-9]+)$', ReviewDetail.as_view()),
 #    url('^purchases/(?P<username>.+)/$', PurchaseList.as_view()),
->>>>>>> ceb1977e8d311cd60aaf07381ed27f2851fc9287
+
     url(r'^api/course/$',CourseList.as_view() ),
-    url(r'^api/course/(?P<pk>[0-9]+)$', CourseDetail.as_view()),
+    url(r'^api/course/(?P<slug>.+)$', CourseDetail.as_view()),
 #    url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
 #    url(r'^api/$', TechnologyCreateView.as_view(), name="create"),
 #    url(r'^api/tutorials/(?P<slug>\D+)/$',CourseListView.as_view(), name='technology'),

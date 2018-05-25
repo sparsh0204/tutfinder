@@ -28,16 +28,20 @@ class CourseList(generics.ListCreateAPIView):
     serializer_class = CourseSerializer
 
 
-class CourseDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Course.objects.all()
+class CourseDetail(generics.ListCreateAPIView):
+    # queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        slug = self.kwargs['slug']
+        return Course.objects.filter(slug=slug)
 
 class TechCourseList(generics.ListCreateAPIView):
     serializer_class = CourseSerializer
 
     def get_queryset(self):
         tech = self.kwargs['tech']
-        return Course.objects.filter(tech=tech)
+        return Course.objects.filter(tech__title=tech)
 
 class ReviewList(generics.ListCreateAPIView):
     queryset = Review.objects.all()
