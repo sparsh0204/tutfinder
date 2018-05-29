@@ -24,7 +24,8 @@ urlpatterns = [
     url(r'', include('core.urls')),
     url(r'', include('technology.urls')),
     url(r'', include('course.urls')),
-    url(r'', include('api.urls')),
+    # url(r'', include('api.urls')),
+    url(r'^api/', include("api.urls", namespace='api')),
 #    url(r'', include('user.urls')),
-
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]

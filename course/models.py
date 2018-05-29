@@ -1,42 +1,63 @@
 from django.db import models
 from technology.models import Technology
+from django.db.models.signals import pre_save
 from django.contrib.auth.models import Permission, User
-from django.conf import settings
-from django.contrib.auth.models import AbstractUser
-from django.db.models.signals import post_save
 from django.template.defaultfilters import slugify
 from ckeditor.fields import RichTextField #does not contain upload option for us in Images
 from ckeditor_uploader.fields import  RichTextUploadingField #for adding upload from our own server in CKEDITOR
 
+
+def course_logo(instance, filename):
+    return '/'.join(['Images/course', instance.title])
+
 class Course(models.Model):
-    def course_logo(instance, filename):
-        return '/'.join(['Images/course', instance.title])
+    tech = models.ForeignKey(Technology, default=None, on_delete=models.CASCADE)
     submitter = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='submitter')
     tutor = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='tutor')
-    url = models.URLField(default='', blank=True)
-#    langauge =
     title = models.CharField(max_length=255, blank=True, null=True)
-    detail = RichTextUploadingField()
-    logo = models.ImageField(upload_to=course_logo, blank=True, )
-    logo_url = models.URLField(default='', blank=False)
-    free = models.BooleanField(default=True, blank=False)
-#    active
-#    price
-#    type choice = book, video, course
-    LEVEL = (('BEGINNER', 'Beginner'), ('INTERMEDIATE', 'Intermediate'),
-               ('ADVANCED', 'Advanced'))
-    level = models.CharField(choices=LEVEL, default='Select', max_length=20, blank=False)
-#    advanced begineeer, inter
-#    expexted duration
-    upvotes = models.IntegerField(blank=True, null=True)
-    tech = models.ForeignKey(Technology, default= None , on_delete=models.CASCADE)
     slug = models.SlugField(blank=True, unique=True)
-
-#    def get_absolute_url(self):
+    url = models.URLField(default='', blank=True)
+    detail = RichTextUploadingField()
+    logo = models.ImageField(upload_to=course_logo, blank=True)
+    logo_url = models.URLField(default='', blank=True)
+    upvotes = models.IntegerField(blank=True, null=True)
+    free = models.BooleanField(default=True, blank=False)
+    LEVEL = (('BEGINNER', 'Beginner'), ('INTERMEDIATE', 'Intermediate'),
+             ('ADVANCED', 'Advanced'))
+    level = models.CharField(choices=LEVEL, default='Select', max_length=20, blank=False)
+    # self paced = bool
+    # langauge =
+    # active = bool
+    # price = int
+    # type choice = book, video, course
+    # advanced begineeer, inter
+    # expexted duration
+    # def get_absolute_url(self):
+    # certificate
+    def __unicode__(self):
+        return self.title
 
     def __str__(self):
         return (self.title + str(self.tech))
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        super(Course, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.slug = slugify(self.title)
+    #     super(Course, self).save(*args, **kwargs)
+
+def create_slug(instance, new_slug=None):
+    slug = slugify(instance.title)
+    if new_slug is not None:
+        slug = new_slug
+    qs = Course.objects.filter(slug=slug).order_by("-id")
+    exists = qs.exists()
+    if exists:
+        new_slug = "%s-%s" %(slug, qs.first().id)
+        return create_slug(instance, new_slug=new_slug)
+    return slug
+
+
+def pre_save_post_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_slug(instance)
+
+pre_save.connect(pre_save_post_receiver, sender=Course)
