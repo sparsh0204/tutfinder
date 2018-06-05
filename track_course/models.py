@@ -1,5 +1,6 @@
 from django.db import models
 from technology.models import Technology
+from track.models import Track
 from django.db.models.signals import pre_save
 from django.contrib.auth.models import Permission, User
 from django.template.defaultfilters import slugify
@@ -7,20 +8,21 @@ from ckeditor.fields import RichTextField #does not contain upload option for us
 from ckeditor_uploader.fields import  RichTextUploadingField #for adding upload from our own server in CKEDITOR
 
 
-def course_logo(instance, filename):
-    return '/'.join(['Images/course', instance.title])
+def track_course_logo(instance, filename):
+    return '/'.join(['Images/track_course', instance.title])
 
-class Course(models.Model):
-    tech = models.ForeignKey(Technology, default=None, on_delete=models.CASCADE)
-    submitter = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='submitter')
-    tutor = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='course_tutor')
+class TrackCourse(models.Model):
+    track = models.ForeignKey(Track, default=None, on_delete=models.CASCADE)
+    # tech = models.ForeignKey(Technology, default=None, on_delete=models.CASCADE)
+    tutor = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='tutor')
     title = models.CharField(max_length=255, blank=True, null=True)
     slug = models.SlugField(blank=True, unique=True)
     url = models.URLField(default='', blank=True)
     detail = RichTextUploadingField()
-    logo = models.ImageField(upload_to=course_logo, blank=True)
+    logo = models.ImageField(upload_to=track_course_logo, blank=True)
     logo_url = models.URLField(default='', blank=True)
-    upvotes = models.IntegerField(blank=True, null=True)
+    MEDIUM = (('VIDEO', 'Video'), ('TEXT', 'Text'))
+    medium = models.CharField(choices=MEDIUM, default='Select', max_length=20, blank=False)
     free = models.BooleanField(default=True, blank=False)
     LEVEL = (('BEGINNER', 'Beginner'), ('INTERMEDIATE', 'Intermediate'),
              ('ADVANCED', 'Advanced'))
@@ -48,7 +50,7 @@ def create_slug(instance, new_slug=None):
     slug = slugify(instance.title)
     if new_slug is not None:
         slug = new_slug
-    qs = Course.objects.filter(slug=slug).order_by("-id")
+    qs = TrackCourse.objects.filter(slug=slug).order_by("-id")
     exists = qs.exists()
     if exists:
         new_slug = "%s-%s" %(slug, qs.first().id)
@@ -60,4 +62,4 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance)
 
-pre_save.connect(pre_save_post_receiver, sender=Course)
+pre_save.connect(pre_save_post_receiver, sender=TrackCourse)

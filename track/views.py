@@ -27,53 +27,52 @@ from rest_framework.pagination import (
     PageNumberPagination,
 )
 from .serializers import (
-    TechnologyListSerializer,
-    TechnologyDetailSerializer,
-    TechnologyCreateUpdateSerializer,
-    TechnologyDeleteSerializer,
+    TrackListSerializer,
+    TrackDetailSerializer,
+    TrackCreateUpdateSerializer,
+    TrackDeleteSerializer,
+
 )
-from .models import Technology
 
+from .models import Track
 
-class TechnologyCreateAPIView(CreateAPIView):
-    queryset = Technology.objects.all()
-    serializer_class = TechnologyCreateUpdateSerializer
+class TrackCreateAPIView(CreateAPIView):
+    queryset = Track.objects.all()
+    serializer_class = TrackCreateUpdateSerializer
     permission_classes = [IsAuthenticated]
 
-class TechnologyListAPIView(ListAPIView):
+class TrackListAPIView(ListAPIView):
     # queryset = Post.objects.all()
-    serializer_class = TechnologyListSerializer
+    serializer_class = TrackListSerializer
     filter_backends = [SearchFilter, OrderingFilter] #ordering=title in url (-title gives opposite)
-    search_fields = ['title', 'detail', 'user__first_name']
+    search_fields = ['title', 'detail']
     # pagination_class = PostPageNumberPagination
     def get_queryset(self, *args, **kwargs):
         #queryset_list = super(PostListAPIView,self).get_queryset(*args, **kwargs)
-        queryset_list = Technology.objects.all()
+        queryset_list = Track.objects.all()
         query = self.request.GET.get("q")
         if query:
             queryset_list = queryset_list.filter(
                 Q(title__icontains=query)|
-                Q(detail__icontains=query)|
-                Q(user__first_name__icontains=query)|
-                Q(user__last_name__icontains=query)
+                Q(detail__icontains=query)
                 ).distinct()
         return queryset_list
 
-class TechnologyDetailAPIView(RetrieveAPIView):
-    queryset = Technology.objects.all()
-    serializer_class = TechnologyDetailSerializer
+class TrackDetailAPIView(RetrieveAPIView):
+    queryset = Track.objects.all()
+    serializer_class = TrackDetailSerializer
     lookup_field = 'slug'
     # lookup_url_kwrg = 'slug'
 
-class TechnologyDeleteAPIView(DestroyAPIView):
-    queryset = Technology.objects.all()
-    serializer_class = TechnologyDeleteSerializer
+class TrackDeleteAPIView(DestroyAPIView):
+    queryset = Track.objects.all()
+    serializer_class = TrackDeleteSerializer
     lookup_field = 'slug'
     # lookup_url_kwrg = 'slug'
 
-class TechnologyUpdateAPIView(RetrieveUpdateAPIView):
-    queryset = Technology.objects.all()
-    serializer_class = TechnologyCreateUpdateSerializer
+class TrackUpdateAPIView(RetrieveUpdateAPIView):
+    queryset = Track.objects.all()
+    serializer_class = TrackCreateUpdateSerializer
     lookup_field = 'slug'
     permission_classes = [IsAuthenticatedOrReadOnly]
     # lookup_url_kwrg = 'slug'
