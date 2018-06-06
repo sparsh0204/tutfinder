@@ -1,20 +1,86 @@
-from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField, SerializerMethodField
 from .models import Technology
-#from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 
+tech_detail_url = HyperlinkedIdentityField(
+    view_name = 'tech:tech_detail', #related name in urls
+    lookup_field = 'slug'
+)
 
-class TechnologySerializer(serializers.ModelSerializer):
-    """Serializer to map the Model instance into JSON format."""
-#    owner = serializers.ReadOnlyField(source='owner.username')
+class TechnologyCreateUpdateSerializer(ModelSerializer):
     class Meta:
-        """Meta class to map serializer's fields with the model fields."""
         model = Technology
-        fields = ('title', 'details', 'doc_url', 'logo', 'logo_url', 'slug')
-#        read_only_fields = ('created',)
+        fields = [
+            'title',
+            'detail',
+            'doc_url',
+            'logo',
+            'logo_url',
+        ]
 
-'''class UserSerializer(serializers.ModelSerializer):
-    photos = serializers.PrimaryKeyRelatedField(many=True, queryset=Photos.objects.all())
-
+class TechnologyListSerializer(ModelSerializer):
+    url = tech_detail_url
+    image = SerializerMethodField()
     class Meta:
-        model = User
-        fields = ('id', 'username', 'photos')'''
+        model = Technology
+        fields = [
+            'id',
+            'url',
+            'title',
+            'slug',
+            'detail',
+            'image',
+            'doc_url',
+            'logo',
+            'logo_url',
+            'course_count',
+        ]
+    def get_image(self, obj):
+        try:
+            image = obj.logo.url
+        except:
+            image = None
+        return image
+
+class TechnologyDetailSerializer(ModelSerializer):
+    image = SerializerMethodField()
+    class Meta:
+        model = Technology
+        fields = [
+            'id',
+            'title',
+            'slug',
+            'detail',
+            'image',
+            'doc_url',
+            'logo',
+            'logo_url',
+            'course_count',
+        ]
+    def get_image(self, obj):
+        try:
+            image = obj.logo.url
+        except:
+            image = None
+        return image
+
+class TechnologyDeleteSerializer(ModelSerializer):
+    image = SerializerMethodField()
+    class Meta:
+        model = Technology
+        fields = [
+            'id',
+            'title',
+            'slug',
+            'detail',
+            'image',
+            'doc_url',
+            'logo',
+            'logo_url',
+        ]
+    def get_image(self, obj):
+        try:
+            image = obj.logo.url
+        except:
+            image = None
+        return image
