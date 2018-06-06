@@ -13,12 +13,13 @@ def track_course_logo(instance, filename):
 
 class TrackCourse(models.Model):
     track = models.ForeignKey(Track, default=None, on_delete=models.CASCADE)
+    number = models.IntegerField(default=1,blank=True,null=True)
     # tech = models.ForeignKey(Technology, default=None, on_delete=models.CASCADE)
     tutor = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='tutor')
     title = models.CharField(max_length=255, blank=True, null=True)
     slug = models.SlugField(blank=True, unique=True)
     url = models.URLField(default='', blank=True)
-    detail = RichTextUploadingField()
+    detail = models.CharField(max_length=255, blank=True, null=True)
     logo = models.ImageField(upload_to=track_course_logo, blank=True)
     logo_url = models.URLField(default='', blank=True)
     MEDIUM = (('VIDEO', 'Video'), ('TEXT', 'Text'))
@@ -40,7 +41,7 @@ class TrackCourse(models.Model):
         return self.title
 
     def __str__(self):
-        return (self.title + str(self.tech))
+        return (self.title + str(self.track))
 
     # def save(self, *args, **kwargs):
     #     self.slug = slugify(self.title)

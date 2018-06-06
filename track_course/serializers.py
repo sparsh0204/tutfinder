@@ -28,16 +28,17 @@ class TrackCourseCreateUpdateSerializer(ModelSerializer):
     #    return str(obj.tutor.username)
 
 class TrackCourseListSerializer(ModelSerializer):
-    url = track_course_detail_url
+    # url = track_course_detail_url
     track = SerializerMethodField()
-    tutor = SerializerMethodField()
+    # tutor = SerializerMethodField()
     image = SerializerMethodField()
     class Meta:
         model = TrackCourse
         fields = [
             'id',
+            'number',
             'track',
-            'tutor',
+            # 'tutor',
             'title',
             'slug',
             'url',
@@ -51,8 +52,8 @@ class TrackCourseListSerializer(ModelSerializer):
         ]
     def get_track(self, obj):
         return str(obj.track.title)
-    def get_tutor(self, obj):
-        return str(obj.tutor.username)
+    # def get_tutor(self, obj):
+    #     return str(obj.tutor.username)
     def get_image(self, obj):
         try:
             image = obj.logo.url
