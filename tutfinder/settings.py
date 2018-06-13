@@ -149,3 +149,14 @@ CKEDITOR_CONFIGS = {
 }
 #saw it some where
 CKEDITOR_ALLOW_NONIMAGE_FILES = True
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}

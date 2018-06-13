@@ -31,11 +31,10 @@ from .serializers import (
     CourseDetailSerializer,
     CourseCreateUpdateSerializer,
     CourseDeleteSerializer,
-    # ReviewSerializer,
-    # ProfileSerializer,
+    SubmitCourseCreateUpdateSerializer,
 )
 
-from .models import Course
+from .models import Course, SubmitCourse
 
 class CourseCreateAPIView(CreateAPIView):
     queryset = Course.objects.all()
@@ -91,3 +90,10 @@ class CourseUpdateAPIView(RetrieveUpdateAPIView):
     lookup_field = 'slug'
     permission_classes = [IsAuthenticatedOrReadOnly]
     # lookup_url_kwrg = 'slug'
+
+class SubmitCourseCreateAPIView(CreateAPIView):
+    queryset = SubmitCourse.objects.all()
+    serializer_class = SubmitCourseCreateUpdateSerializer
+    permission_classes = [IsAuthenticated]
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

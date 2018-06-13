@@ -19,7 +19,8 @@ class TrackCourse(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     slug = models.SlugField(blank=True, unique=True)
     url = models.URLField(default='', blank=True)
-    detail = models.CharField(max_length=255, blank=True, null=True)
+    detail = models.TextField(default='', blank=True, null=True)
+    #detail = models.CharField(max_length=255, blank=True, null=True)
     logo = models.ImageField(upload_to=track_course_logo, blank=True)
     logo_url = models.URLField(default='', blank=True)
     MEDIUM = (('VIDEO', 'Video'), ('TEXT', 'Text'))
@@ -43,9 +44,9 @@ class TrackCourse(models.Model):
     def __str__(self):
         return (self.title + str(self.track))
 
-    # def save(self, *args, **kwargs):
-    #     self.slug = slugify(self.title)
-    #     super(Course, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+         self.slug = slugify(self.title)
+         super(TrackCourse, self).save(*args, **kwargs)
 
 def create_slug(instance, new_slug=None):
     slug = slugify(instance.title)

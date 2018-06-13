@@ -10,6 +10,19 @@ from ckeditor_uploader.fields import  RichTextUploadingField #for adding upload 
 def course_logo(instance, filename):
     return '/'.join(['Images/course', instance.title])
 
+
+class SubmitCourse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='raw_submitter')
+    url = models.URLField(default='', blank=True)
+    detail = models.TextField(default='', blank=True, null=True)
+    free = models.BooleanField(default=True, blank=False)
+    LEVEL = (('BEGINNER', 'Beginner'), ('INTERMEDIATE', 'Intermediate'),
+             ('ADVANCED', 'Advanced'))
+    level = models.CharField(choices=LEVEL, default='Select', max_length=20, blank=False)
+    MEDIUM = (('VIDEO', 'Video'), ('TEXT', 'Text'))
+    medium = models.CharField(choices=MEDIUM, default='Select', max_length=20, blank=False)
+
+
 class Course(models.Model):
     tech = models.ForeignKey(Technology, default=None, on_delete=models.CASCADE)
     submitter = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='submitter')
@@ -25,6 +38,8 @@ class Course(models.Model):
     LEVEL = (('BEGINNER', 'Beginner'), ('INTERMEDIATE', 'Intermediate'),
              ('ADVANCED', 'Advanced'))
     level = models.CharField(choices=LEVEL, default='Select', max_length=20, blank=False)
+    MEDIUM = (('VIDEO', 'Video'), ('TEXT', 'Text'))
+    medium = models.CharField(choices=MEDIUM, default='Select', max_length=20, blank=False)
     # self paced = bool
     # langauge =
     # active = bool

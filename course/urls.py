@@ -8,6 +8,7 @@ from .views import (
     CourseDetailAPIView,
     CourseDeleteAPIView,
     CourseUpdateAPIView,
+    SubmitCourseCreateAPIView,
 )
 
 urlpatterns = [
@@ -17,6 +18,8 @@ urlpatterns = [
     url(r'^course/(?P<slug>[\w-]+)/$', CourseDetailAPIView.as_view(), name='course_detail'),
     url(r'^course/(?P<slug>[\w-]+)/edit/$', CourseUpdateAPIView.as_view(), name='course_update'),
     url(r'^course/(?P<slug>[\w-]+)/delete/$', CourseDeleteAPIView.as_view(), name='course_delete'),
+    url(r'^course/submit/$', SubmitCourseCreateAPIView.as_view(), name='course_submit'),
+
     # url(r'^posts/$', "<appname>.views.<function_name>"),
 
 ]

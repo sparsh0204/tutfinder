@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField, SerializerMethodField
-from .models import Course
+from .models import Course, SubmitCourse
 #from review.models import Review
 #from user.models import Profile
 # from django.contrib.auth.models import User
@@ -28,6 +28,7 @@ class CourseCreateUpdateSerializer(ModelSerializer):
             'logo_url',
             'free',
             'level',
+            'medium',
         ]
     #def get_tech(self, obj):
     #    return str(obj.tech.title)
@@ -65,6 +66,7 @@ class CourseListSerializer(ModelSerializer):
             'upvotes',
             'free',
             'level',
+            'medium',
         ]
     def get_tech(self, obj):
         return str(obj.tech.title)
@@ -101,6 +103,7 @@ class CourseDetailSerializer(ModelSerializer):
             'upvotes',
             'free',
             'level',
+            'medium',
         ]
     def get_tech(self, obj):
         return str(obj.tech.title)
@@ -133,6 +136,7 @@ class CourseDeleteSerializer(ModelSerializer):
             'logo_url',
             'free',
             'level',
+            'medium',
         ]
     def get_tech(self, obj):
         return str(obj.tech.title)
@@ -146,3 +150,21 @@ class CourseDeleteSerializer(ModelSerializer):
         except:
             image = None
         return image
+
+
+class SubmitCourseCreateUpdateSerializer(ModelSerializer):
+    user = SerializerMethodField()
+    class Meta:
+        model = SubmitCourse
+        fields = [
+            'user',
+            'url',
+            'detail',
+            'free',
+            'level',
+            'medium',
+        ]
+    def get_user(self, obj):
+        return str(obj.user.username)
+    #def get_tutor(self, obj):
+    #    return str(obj.tutor.username)
